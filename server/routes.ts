@@ -8,7 +8,7 @@ import { z } from "zod";
 
 const executeSchema = z.object({
   code: z.string().min(1).max(50000),
-  language: z.enum(["javascript", "typescript", "cpp", "python", "bash"]),
+  language: z.enum(["javascript", "typescript", "c", "cpp", "python", "bash"]),
 });
 
 function runCommand(cmd: string, timeout = 10000): Promise<{ stdout: string; stderr: string; exitCode: number }> {
@@ -48,6 +48,24 @@ async function executeTypeScript(code: string) {
     await writeFile(file, code, "utf-8");
     const tsxBin = join(process.cwd(), "node_modules/.bin/tsx");
     return runCommand(`"${tsxBin}" "${file}"`, 15000);
+  });
+}
+
+async function executeC(code: string) {
+  return withTempDir(async (dir) => {
+    const srcFile = join(dir, "code.c");
+    const outFile = join(dir, "code");
+    await writeFile(srcFile, code, "utf-8");
+
+    const compileResult = await runCommand(`gcc -O2 -o "${outFile}" "${srcFile}" -lm 2>&1`, 30000);
+    if (compileResult.exitCode !== 0) {
+      return {
+        stdout: "",
+        stderr: compileResult.stdout || compileResult.stderr,
+        exitCode: compileResult.exitCode,
+      };
+    }
+    return runCommand(`"${outFile}"`, 10000);
   });
 }
 
@@ -118,6 +136,9 @@ export async function registerRoutes(
           break;
         case "typescript":
           result = await executeTypeScript(code);
+          break;
+        case "c":
+          result = await executeC(code);
           break;
         case "cpp":
           result = await executeCpp(code);

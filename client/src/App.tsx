@@ -14,6 +14,59 @@ import { useTheme } from "@/hooks/use-theme";
 import { Code2, FileCode, Cpu, Zap, Terminal } from "lucide-react";
 
 const LANGUAGES = {
+  c: {
+    id: "c",
+    name: "C",
+    label: "C",
+    fileExtension: ".c",
+    color: "text-sky-500 dark:text-sky-400",
+    accentColor: "bg-sky-100/80 text-sky-800 dark:bg-sky-900/30 dark:text-sky-300",
+    defaultCode: `// Welcome to C!
+// Compiled with GCC
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+
+int factorial(int n) {
+    if (n <= 1) return 1;
+    return n * factorial(n - 1);
+}
+
+int main() {
+    printf("Hello from C!\\n");
+
+    // Factorial examples
+    for (int i = 1; i <= 8; i++) {
+        printf("%d! = %d\\n", i, factorial(i));
+    }
+
+    // Array operations
+    int arr[] = {5, 2, 8, 1, 9, 3};
+    int len = sizeof(arr) / sizeof(arr[0]);
+
+    // Bubble sort
+    for (int i = 0; i < len - 1; i++) {
+        for (int j = 0; j < len - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                int tmp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = tmp;
+            }
+        }
+    }
+
+    printf("Sorted: ");
+    for (int i = 0; i < len; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\\n");
+
+    return 0;
+}
+`,
+  },
   javascript: {
     id: "javascript",
     name: "JavaScript",
@@ -204,6 +257,7 @@ function AppContent() {
             <Switch>
               <Route path="/" component={() => <EditorPage language={LANGUAGES.javascript} />} />
               <Route path="/typescript" component={() => <EditorPage language={LANGUAGES.typescript} />} />
+              <Route path="/c" component={() => <EditorPage language={LANGUAGES.c} />} />
               <Route path="/cpp" component={() => <EditorPage language={LANGUAGES.cpp} />} />
               <Route path="/python" component={() => <EditorPage language={LANGUAGES.python} />} />
               <Route path="/bash" component={() => <EditorPage language={LANGUAGES.bash} />} />

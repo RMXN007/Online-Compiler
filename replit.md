@@ -18,11 +18,12 @@ A web-based multi-language code execution environment with dark mode support. Us
 - **Storage**: In-memory (no persistent data needed)
 
 ## Key Features
-- Multi-language support: JavaScript, TypeScript, C++, Python (if available), Bash
+- Multi-language support: JavaScript, TypeScript, C, C++, Python (if available), Bash
 - Real code execution with stdout/stderr output
 - Execution time measurement
-- Code editor with line numbers, tab support, auto-indent
-- Dark/light mode toggle
+- VSCode-style syntax highlighting via CodeMirror 6 (One Dark theme in dark mode, custom light theme)
+- Language-aware editor: keywords, strings, comments, numbers all color-coded
+- Dark/light mode toggle (editor theme switches automatically)
 - Code snippets library
 - Download and copy code functionality
 
@@ -48,15 +49,23 @@ server/
 
 ## API
 - `POST /api/execute` - Execute code
-  - Body: `{ code: string, language: "javascript" | "typescript" | "cpp" | "python" | "bash" }`
+  - Body: `{ code: string, language: "javascript" | "typescript" | "c" | "cpp" | "python" | "bash" }`
   - Response: `{ stdout, stderr, exitCode, executionTime, language }`
 
 ## Supported Languages
 - **JavaScript** - Node.js 20
 - **TypeScript** - tsx runner
+- **C** - GCC compiler (with -lm math library)
 - **C++** - GCC g++ compiler
-- **Python** - python3 (if installed)
+- **Python** - python3 (graceful error if not installed)
 - **Bash** - Bash shell
+
+## Syntax Highlighting
+- Powered by CodeMirror 6 with language-specific extensions
+- Dark mode: One Dark theme (matching VSCode's popular dark theme)
+- Light mode: Custom theme using app CSS variables
+- Theme switches automatically when toggling dark/light mode
+- Languages: JavaScript, TypeScript (via lang-javascript), C/C++ (via lang-cpp), Python (via lang-python), Bash/Shell (via legacy-modes)
 
 ## Design
 - Dark-first IDE color scheme (deep blue-gray palette)

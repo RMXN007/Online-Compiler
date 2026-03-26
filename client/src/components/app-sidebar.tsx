@@ -34,6 +34,15 @@ const languages = [
     url: "/typescript",
   },
   {
+    id: "c",
+    title: "C",
+    icon: Cpu,
+    color: "text-sky-500 dark:text-sky-400",
+    badge: "C",
+    badgeColor: "bg-sky-100 text-sky-800 dark:bg-sky-900/40 dark:text-sky-300",
+    url: "/c",
+  },
+  {
     id: "cpp",
     title: "C++",
     icon: Cpu,
